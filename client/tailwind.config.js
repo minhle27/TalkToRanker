@@ -2,6 +2,9 @@
 export default {
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
+    fontFamily: {
+      montserat: ["Montserrat", "sans-serif"],
+    },
     extend: {
       colors: {
         "blue-200": "#B1D1F0",
