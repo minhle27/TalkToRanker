@@ -2,9 +2,8 @@ from nl4dv import NL4DV
 import os
 
 print(__file__)
-cwd = os.getcwd()
-DATA_PATH = os.path.join(cwd, "data")
-MODELS_PATH = os.path.join("server", "models")
+#cwd = os.getcwd()
+DATA_PATH = os.path.join("server", "data")
 
 def get_nl4dv_instance(data_path=os.path.join(DATA_PATH, "movies-w-year.csv")):
     nl4dv_instance = NL4DV(data_url=data_path)
