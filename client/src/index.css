@@ -6,4 +6,12 @@
   .btn-primary {
     @apply py-1 px-5 bg-green-300 text-white font-semibold rounded-md shadow-md hover:bg-green-200 focus:outline-none focus:ring focus:ring-violet-400 focus:ring-opacity-75;
   }
+
+  .message {
+    @apply text-base p-[10px] rounded-lg text-black max-w-80 mt-[20px] bg-grey-200 inline-block;
+  }
+
+  .own {
+    @apply bg-blue-200 ml-auto;
+  }
 }

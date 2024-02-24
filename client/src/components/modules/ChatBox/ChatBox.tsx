@@ -1,21 +1,38 @@
 import queriesService from "../../../services/queries";
 import { getErrorMessage } from "../../../utils";
+import Message from "./Message";
+import { MessageType } from "../../pages/Home";
 
 interface Props {
   setVisData: React.Dispatch<React.SetStateAction<null>>;
   query: string;
   setQuery: React.Dispatch<React.SetStateAction<string>>;
+  messages: Array<MessageType>;
+  setMessages: React.Dispatch<React.SetStateAction<Array<MessageType>>>;
 }
 
-const ChatBox = ({ setVisData, query, setQuery }: Props) => {
+const ChatBox = ({
+  setVisData,
+  query,
+  setQuery,
+  messages,
+  setMessages,
+}: Props) => {
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
+    const model_response = `Visualizing: ${query}`;
+    setMessages([
+      ...messages,
+      { content: query, isUser: true },
+      { content: model_response, isUser: false },
+    ]);
+    setQuery("");
     try {
       const data = await queriesService.getVis(query);
       setVisData(data);
-      setQuery("");
     } catch (e: unknown) {
       const message = getErrorMessage(e);
+      setVisData(null);
       console.log(message);
     }
   };
@@ -25,7 +42,11 @@ const ChatBox = ({ setVisData, query, setQuery }: Props) => {
       <p className="flex-none py-2 text-14 ml-2 font-semibold text-red-200">
         TalkToRanker
       </p>
-      <div className="grow"></div>
+      <section className="grow overflow-y-scroll overflow-x-hidden px-4 py-1 flex flex-col">
+        {messages.map((msg, id) => {
+          return <Message key={id} message={msg} />;
+        })}
+      </section>
       <form className="flex flex-none" onSubmit={handleSubmit}>
         <input
           className="m-4 w-4/5 py-[10px] pl-[10px] bg-red-100 rounded-md"
