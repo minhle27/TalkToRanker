@@ -21,21 +21,20 @@ const ChatBox = ({
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     const model_response = `Visualizing: ${query}`;
-    let data;
-    try {
-      data = await queriesService.getVis(query);
-    } catch (e: unknown) {
-      data = null;
-      const message = getErrorMessage(e);
-      console.log(message);
-    }
-    setVisData(data);
     setMessages([
       ...messages,
       { content: query, isUser: true },
       { content: model_response, isUser: false },
     ]);
     setQuery("");
+    try {
+      const data = await queriesService.getVis(query);
+      setVisData(data);
+    } catch (e: unknown) {
+      const message = getErrorMessage(e);
+      setVisData(null);
+      console.log(message);
+    }
   };
 
   return (
@@ -45,9 +44,7 @@ const ChatBox = ({
       </p>
       <section className="grow overflow-y-scroll overflow-x-hidden px-4 py-1 flex flex-col">
         {messages.map((msg, id) => {
-          return (
-            <Message key={id} message={msg} />
-          );
+          return <Message key={id} message={msg} />;
         })}
       </section>
       <form className="flex flex-none" onSubmit={handleSubmit}>
