@@ -1,4 +1,15 @@
 Flask==2.1.1
 Flask-Cors==3.0.10
 Flask-Session==0.4.0
-werkzeug===2.2.2
+werkzeug==2.2.2
+nl4dv==2.1.0
+nltk==3.8.1
+numpy==1.26.4
+pandas==1.5.3
+vega==3.6.0
+fuzzywuzzy==0.8.2
+pytest==3.10.1
+pytest-cov==2.6.1 
+python-levenshtein==0.12.2 
+si-prefix==1.2.2
+spacy==3.7.2
