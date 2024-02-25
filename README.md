@@ -16,7 +16,7 @@
 
 6. If some problems occur when installing dependencies, make sure the current python version is 3.9.
    You can also try these command to find solutions
-   - conda install -c conda-forge <package-name>==<version> (install missing dependencies separately)
+   - conda install -c conda-forge package-name==version (install missing dependencies separately)
    - conda list (to list all packages and its version in the current environment)
-   - python -m pip install <package-name>==<version>
+   - python -m pip install package-name==version
 
