@@ -2,21 +2,23 @@ import queriesService from "../../../services/queries";
 import { getErrorMessage } from "../../../utils";
 import Message from "./Message";
 import { MessageType } from "../../pages/Home";
-
+import { VisDataType } from "../../pages/Home";
 interface Props {
-  setVisData: React.Dispatch<React.SetStateAction<null>>;
   query: string;
   setQuery: React.Dispatch<React.SetStateAction<string>>;
   messages: Array<MessageType>;
   setMessages: React.Dispatch<React.SetStateAction<Array<MessageType>>>;
+  visHis: Array<VisDataType>;
+  setVisHis: React.Dispatch<React.SetStateAction<Array<VisDataType>>>;
 }
 
 const ChatBox = ({
-  setVisData,
   query,
   setQuery,
   messages,
   setMessages,
+  visHis,
+  setVisHis,
 }: Props) => {
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
@@ -29,10 +31,10 @@ const ChatBox = ({
     setQuery("");
     try {
       const data = await queriesService.getVis(query);
-      setVisData(data);
+      setVisHis([...visHis, data]);
     } catch (e: unknown) {
       const message = getErrorMessage(e);
-      setVisData(null);
+      setVisHis([...visHis, { response: { visList: [] } }]);
       console.log(message);
     }
   };
@@ -49,7 +51,7 @@ const ChatBox = ({
       </section>
       <form className="flex flex-none" onSubmit={handleSubmit}>
         <input
-          className="m-4 w-4/5 py-[10px] pl-[10px] bg-red-100 rounded-md"
+          className="m-4 w-4/5 py-[10px] pl-[10px] bg-red-100 rounded-md pr-2"
           placeholder="Enter what you want to visualize"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
