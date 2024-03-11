@@ -1,18 +1,8 @@
 import ChatBox from "../modules/ChatBox/ChatBox";
 import VisBox from "../modules/VisBox/VisBox";
 import { useState } from "react";
-
-export interface MessageType {
-  content: string;
-  isUser: boolean;
-}
-
-export interface VisDataType {
-  response: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    visList: Array<any>;
-  };
-}
+import { MessageType } from "../../types";
+import { VisDataType } from "../../types";
 
 const Home = () => {
   const [query, setQuery] = useState("");
