@@ -1,9 +1,10 @@
 import flask as f
 from flask import Flask
-from server.helpers import doVis
 from html import escape
 from flask_cors import CORS
 import os
+
+from server.helpers import doVis, chat2vis
 
 api = f.Blueprint("api", __name__)
 
@@ -14,6 +15,18 @@ def vis_controller():
         f.abort(400, description="No query specified.")
 
     result = doVis(query)
+    return {
+        "message": f"Successfully executed query: {query}",
+        "response": result,
+    }
+    
+@api.route("/execute/chat2vis/visualization")
+def chat2vis_controller():
+    query = f.request.args.get("query")
+    if not query:
+        f.abort(400, description="No query specified.")
+
+    result = chat2vis(query)
     return {
         "message": f"Successfully executed query: {query}",
         "response": result,
