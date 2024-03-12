@@ -4,8 +4,11 @@ export interface MessageType {
 }
 
 export interface VisDataType {
-  response: {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    visList: Array<any>;
+  data: {
+    response: {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      visList: Array<any>;
+    };
   };
+  query: string;
 }

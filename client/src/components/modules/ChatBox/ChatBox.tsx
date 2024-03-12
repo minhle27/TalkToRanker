@@ -2,21 +2,21 @@ import queriesService from "../../../services/queries";
 import { getErrorMessage } from "../../../utils";
 import Message from "./Message";
 import { MessageType } from "../../../types";
-import { VisDataType } from "../../../types";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import QueryContext from "../../../state/QueryContext";
+
 interface Props {
   messages: Array<MessageType>;
   setMessages: React.Dispatch<React.SetStateAction<Array<MessageType>>>;
-  visHis: Array<VisDataType>;
-  setVisHis: React.Dispatch<React.SetStateAction<Array<VisDataType>>>;
 }
 
-const ChatBox = ({ messages, setMessages, visHis, setVisHis }: Props) => {
+const ChatBox = ({ messages, setMessages }: Props) => {
+  const { visHis, setVisHis } = useContext(QueryContext);
   const [query, setQuery] = useState("");
-  
+
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
-    const model_response = `Visualizing: ${query}`;
+    const model_response = `TTM reponds to query: ${query}`;
     setMessages([
       ...messages,
       { content: query, isUser: true },
@@ -25,10 +25,14 @@ const ChatBox = ({ messages, setMessages, visHis, setVisHis }: Props) => {
     setQuery("");
     try {
       const data = await queriesService.getVis(query);
-      setVisHis([...visHis, data]);
+      const newVisData = {
+        data,
+        query,
+      };
+      setVisHis([...visHis, newVisData]);
     } catch (e: unknown) {
       const message = getErrorMessage(e);
-      setVisHis([...visHis, { response: { visList: [] } }]);
+      setVisHis([...visHis, { data: { response: { visList: [] } }, query }]);
       console.log(message);
     }
   };
@@ -50,7 +54,11 @@ const ChatBox = ({ messages, setMessages, visHis, setVisHis }: Props) => {
           value={query}
           onChange={(e) => setQuery(e.target.value)}
         />
-        <button className="btn-primary ml-auto m-4" type="submit">
+        <button
+          className="btn-primary ml-auto m-4"
+          disabled={!query}
+          type="submit"
+        >
           Send
         </button>
       </form>
