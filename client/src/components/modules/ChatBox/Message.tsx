@@ -1,4 +1,4 @@
-import { MessageType } from "../../pages/Home";
+import { MessageType } from "../../../types";
 
 interface Props {
   message: MessageType;

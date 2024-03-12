@@ -1,25 +1,19 @@
 import queriesService from "../../../services/queries";
 import { getErrorMessage } from "../../../utils";
 import Message from "./Message";
-import { MessageType } from "../../pages/Home";
-import { VisDataType } from "../../pages/Home";
+import { MessageType } from "../../../types";
+import { VisDataType } from "../../../types";
+import { useState } from "react";
 interface Props {
-  query: string;
-  setQuery: React.Dispatch<React.SetStateAction<string>>;
   messages: Array<MessageType>;
   setMessages: React.Dispatch<React.SetStateAction<Array<MessageType>>>;
   visHis: Array<VisDataType>;
   setVisHis: React.Dispatch<React.SetStateAction<Array<VisDataType>>>;
 }
 
-const ChatBox = ({
-  query,
-  setQuery,
-  messages,
-  setMessages,
-  visHis,
-  setVisHis,
-}: Props) => {
+const ChatBox = ({ messages, setMessages, visHis, setVisHis }: Props) => {
+  const [query, setQuery] = useState("");
+  
   const handleSubmit = async (e: React.SyntheticEvent) => {
     e.preventDefault();
     const model_response = `Visualizing: ${query}`;

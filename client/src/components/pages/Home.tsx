@@ -5,7 +5,6 @@ import { MessageType } from "../../types";
 import { VisDataType } from "../../types";
 
 const Home = () => {
-  const [query, setQuery] = useState("");
   const [messages, setMessages] = useState(Array<MessageType>);
   const [visHis, setVisHis] = useState(Array<VisDataType>);
 
@@ -18,8 +17,6 @@ const Home = () => {
         <ChatBox
           visHis={visHis}
           setVisHis={setVisHis}
-          setQuery={setQuery}
-          query={query}
           messages={messages}
           setMessages={setMessages}
         />

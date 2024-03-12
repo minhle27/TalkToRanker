@@ -1,5 +1,5 @@
 import VisContent from "./VisContent";
-import { VisDataType } from "../../pages/Home";
+import { VisDataType } from "../../../types";
 interface Props {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   visHis: Array<VisDataType>
