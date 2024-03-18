@@ -1,20 +1,21 @@
 import flask as f
-from flask import Flask
+from flask import Flask, request
 from html import escape
 from flask_cors import CORS
 import os
 
-from server.helpers import doVis, chat2vis
+from server.helpers import doVis, chat2vis, updateQuery
 
 api = f.Blueprint("api", __name__)
 
-@api.route("/execute/visualization")
+@api.route('/execute/visualization', methods=['POST'])
 def vis_controller():
-    query = f.request.args.get("query")
+    print(request.form)
+    query = request.form['query']
     if not query:
         f.abort(400, description="No query specified.")
-
-    result = doVis(query)
+        
+    result = doVis(request)
     return {
         "message": f"Successfully executed query: {query}",
         "response": result,
@@ -49,3 +50,14 @@ def datasets_controller(dataset_name=None):
         return f.send_from_directory(data_path, filename)
     except FileNotFoundError:
         f.abort(404, description=f'Dataset "{filename}" not found.')
+        
+@api.route('/update_query', methods=['POST'])
+def update_query():
+    ambiguity_obj = request.get_json()
+    print(ambiguity_obj)
+    result = updateQuery(ambiguity_obj)
+    print(result)
+    return {
+        "message": "Successfully update query",
+        "response": result,
+    }

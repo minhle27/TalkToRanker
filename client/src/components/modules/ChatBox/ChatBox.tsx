@@ -4,11 +4,28 @@ import Message from "./Message";
 import { MessageType } from "../../../types";
 import { useContext, useState } from "react";
 import QueryContext from "../../../state/QueryContext";
-
+import { Nl4dvResType } from "../../../types";
 interface Props {
   messages: Array<MessageType>;
   setMessages: React.Dispatch<React.SetStateAction<Array<MessageType>>>;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const getUnresolvedAmbiguities = (ambiguityObj: any) => {
+  const ambList: string[] = [];
+  Object.keys(ambiguityObj).forEach(function (ambiguousKeyword) {
+    if (!ambiguityObj[ambiguousKeyword]["selected"]) {
+      if (
+        ambiguityObj[ambiguousKeyword]["selected"] !==
+        "NL4DV_Resolved"
+      ) {
+        ambList.push(ambiguousKeyword)
+      }
+    }
+  });
+  console.log(ambList);
+  return ambList;
+};
 
 const ChatBox = ({ messages, setMessages }: Props) => {
   const { visHis, setVisHis } = useContext(QueryContext);
@@ -24,16 +41,47 @@ const ChatBox = ({ messages, setMessages }: Props) => {
     ]);
     setQuery("");
     try {
-      const data = await queriesService.getVis(query);
+      const nl4dvRes = (await queriesService.getVis(query)) as Nl4dvResType;
+      console.log(nl4dvRes);
+      const attributeAmbiguityList = getUnresolvedAmbiguities(
+        nl4dvRes.response.ambiguity["attribute"]
+      );
+      const valueAmbiguityList = getUnresolvedAmbiguities(
+        nl4dvRes.response.ambiguity["value"]
+      );
+      let type;
+      if (attributeAmbiguityList.length > 0) {
+        type = "attribute";
+      } else if (valueAmbiguityList.length > 0) {
+        type = "value";
+      } else {
+        type = "none";
+      }
+
+      const resolvePending = {
+        valuePending: valueAmbiguityList.length > 0,
+        attributePending: attributeAmbiguityList.length > 0,
+        valueAmbiguityList,
+        attributeAmbiguityList,
+        index: 0,
+        type,
+        ambiguityResponse: {
+          dialog_id: nl4dvRes.response["dialogId"].toString(),
+          query_id: nl4dvRes.response["queryId"].toString(),
+          attribute: {},
+          value: {},
+        },
+      };
       const newVisData = {
-        data,
-        query,
+        data: nl4dvRes,
+        resolvePending,
       };
       setVisHis([...visHis, newVisData]);
     } catch (e: unknown) {
       const message = getErrorMessage(e);
-      setVisHis([...visHis, { data: { response: { visList: [] } }, query }]);
+      setVisHis([...visHis, { data: null, resolvePending: null }]);
       console.log(message);
+      console.log(e);
     }
   };
 
