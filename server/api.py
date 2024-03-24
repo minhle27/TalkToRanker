@@ -4,13 +4,12 @@ from html import escape
 from flask_cors import CORS
 import os
 
-from server.helpers import doVis, chat2vis, updateQuery
+from server.controllers import doVis, chat2vis, updateQuery
 
 api = f.Blueprint("api", __name__)
 
 @api.route('/execute/visualization', methods=['POST'])
-def vis_controller():
-    print(request.form)
+def vis_route():
     query = request.form['query']
     if not query:
         f.abort(400, description="No query specified.")
@@ -22,8 +21,8 @@ def vis_controller():
     }
     
 @api.route("/execute/chat2vis/visualization")
-def chat2vis_controller():
-    query = f.request.args.get("query")
+def chat2vis_route():
+    query = request.form['query']
     if not query:
         f.abort(400, description="No query specified.")
 
@@ -35,7 +34,7 @@ def chat2vis_controller():
 
 @api.route("/datasets")
 @api.route("/datasets/<dataset_name>")
-def datasets_controller(dataset_name=None):
+def datasets_route(dataset_name=None):
     data_path = os.path.join(f.current_app.config["SERVER_PATH"], "data")
 
     # Send all datasets if no dataset name is specified
@@ -52,7 +51,7 @@ def datasets_controller(dataset_name=None):
         f.abort(404, description=f'Dataset "{filename}" not found.')
         
 @api.route('/update_query', methods=['POST'])
-def update_query():
+def update_query_route():
     ambiguity_obj = request.get_json()
     print(ambiguity_obj)
     result = updateQuery(ambiguity_obj)

@@ -62,11 +62,14 @@ def get_primer(df_dataset,df_name):
         elif df_dataset.dtypes[i]=="int64" or df_dataset.dtypes[i]=="float64":
             primer_desc = primer_desc + "\nThe column '" + i + "' is type " + str(df_dataset.dtypes[i]) + " and contains numeric values. "   
     primer_desc = primer_desc + "\nLabel the x and y axes appropriately."
+    primer_desc = primer_desc + "\nUsing figure instead of pyplot."
+    primer_desc = primer_desc + "\nNo need to show the plot."
     primer_desc = primer_desc + "\nAdd a title. Set the fig suptitle as empty."
     primer_desc = primer_desc + "{}" # Space for additional instructions if needed
     primer_desc = primer_desc + "\nUsing Python version 3.9.12, create a script using the dataframe df to graph the following: "
-    pimer_code = "import pandas as pd\nimport matplotlib.pyplot as plt\n"
-    pimer_code = pimer_code + "fig,ax = plt.subplots(1,1,figsize=(10,4))\n"
+    pimer_code = "import pandas as pd\nfrom matplotlib.figure import Figure\n"
+    pimer_code = pimer_code + "fig = Figure(figsize=(15, 10))\n"
+    pimer_code = pimer_code + "ax = fig.subplots(1, 1)\n"
     pimer_code = pimer_code + "ax.spines['top'].set_visible(False)\nax.spines['right'].set_visible(False) \n"
     pimer_code = pimer_code + "df=" + df_name + ".copy()\n"
     return primer_desc,pimer_code
