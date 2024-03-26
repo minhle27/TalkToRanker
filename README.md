@@ -19,4 +19,19 @@
    - conda install -c conda-forge package-name==version (install missing dependencies separately)
    - conda list (to list all packages and its version in the current environment)
    - python -m pip install package-name==version
+7. From here, follow similar steps to activate TalkToModel. Open up a new terminal, while leaving the previous one open. From here follow the steps to make a second Conda environment.
+```shell
+conda create -n ttm python=3.9
+conda activate ttm
+```
 
+Install the requirements
+
+```shell
+pip install -r requirements.txt
+```
+9.  To run TalkToModel do the following:
+    ```shell
+python flask_app.py
+```
+10. From here you should be good to go!
