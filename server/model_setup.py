@@ -5,7 +5,7 @@ print(__file__)
 #cwd = os.getcwd()
 DATA_PATH = os.path.join("server", "data")
 
-def get_nl4dv_instance(data_path=os.path.join(DATA_PATH, "movies-w-year.csv")):
+def get_nl4dv_instance(data_path=os.path.join(DATA_PATH, "diabetes.csv")):
     nl4dv_instance = NL4DV(data_url=data_path)
 
     # using Spacy
@@ -23,7 +23,7 @@ def get_nl4dv_instance(data_path=os.path.join(DATA_PATH, "movies-w-year.csv")):
 
 if __name__ == "__main__":
     nl4dv_instance = get_nl4dv_instance()
-    query = "create a barchart showing average gross across genres"
+    query = "create a barchart comparing age to pregnancies"
 
     output = nl4dv_instance.analyze_query(query)
 

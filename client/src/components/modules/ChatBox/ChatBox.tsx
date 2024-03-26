@@ -29,6 +29,16 @@ const ChatBox = ({
     setQuery("");
     try {
       const data = await queriesService.getVis(query);
+      console.log(data.message)
+      const extractedText = data.message.replace(/<br\s*\/?>/g, '\n').replace(/<[^>]*>/g, '');
+      const formatText = extractedText.replace(/([^\n]+)\n([0-9a-f]+)$/i, '$1');
+      //const strippedText = data.message.replace(/<br\s*\/?>/g, '\n').replace(/<[^>]*>/g, '');
+      setMessages([
+        ...messages,
+        { content: query, isUser: true },
+        { content: model_response, isUser: false },
+        { content: formatText, isUser: false },
+      ]);
       setVisData(data);
     } catch (e: unknown) {
       const message = getErrorMessage(e);
