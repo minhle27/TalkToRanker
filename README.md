@@ -31,7 +31,7 @@ Install the requirements
 pip install -r requirements.txt
 ```
 9.  To run TalkToModel do the following:
-    ```shell
-python flask_app.py
+```shell
+      python flask_app.py
 ```
 10. From here you should be good to go!
